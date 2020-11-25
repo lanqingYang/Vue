@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>记事本</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <style>
+    li {
+      list-style: none;
+    }
+  </style>
+  <body>
+    <div id="app">
+      <input type="text" @keyup.enter="add" v-model="inputValue" />
+      <ul>
+        <li v-for="(item,index) in lis">
+          {{(index+1)}}.{{item}}
+          <button @click="remove(index)">×</button>
+        </li>
+        <li v-show="lis.length!=0">
+          <strong> {{lis.length}} </strong>items left<button @click="clear">
+            删除所有
+          </button>
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    var vue = new Vue({
+      el: "#app",
+      data: {
+        lis: ["学node", "学vue"],
+        inputValue: "",
+      },
+      methods: {
+        add: function () {
+          this.lis.push(this.inputValue);
+        },
+        remove: function (index) {
+          this.lis.splice(index, 1);
+        },
+        clear: function () {
+          this.lis = [];
+        },
+      },
+    });
+  </script>
+</html>

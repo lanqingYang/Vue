@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片切换</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <style>
+    img {
+      width: 400px;
+      height: 300px;
+    }
+  </style>
+  <body>
+    <div id="app">
+      <img :src="imgArr[index]" alt="" />
+      <a href="#" v-show="index>0" @click="prev">上一张</a>
+      <a href="#" v-show="index < imgArr.length-1" @click="next">下一张</a>
+    </div>
+  </body>
+  <script>
+    var vue = new Vue({
+      el: "#app",
+      data: {
+        imgArr: [
+          "../Pics/chicken.jpg",
+          "../Pics/wangji-rabit.jpg",
+          "../Pics/wifi-rabit.jpg",
+          "../Pics/xiamu.jpg",
+        ],
+        index: 0,
+      },
+      methods: {
+        prev: function () {
+          this.index--;
+        },
+        next: function () {
+          this.index++;
+        },
+      },
+    });
+  </script>
+</html>
