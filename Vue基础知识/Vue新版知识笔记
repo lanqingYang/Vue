@@ -31,5 +31,62 @@
 
 
 
-Vue网络应用 
+Vue网络应用 axios+vue
     4. axios 网络请求库
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    语法规则:
+     .1 get:
+        axios.get('/user?ID=12345')
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    或者.then(func(data){},func(err){}) //第一个回调函数是成功触发,第二个失败触发
+
+        上面的请求也可以这样做
+        axios.get('/user', {
+            params: {
+            ID: 12345
+            }
+        })
+        ...(下面相同)
+
+    .2 post:
+        axios.post('/user', {
+            firstName: 'Fred',
+            lastName: 'Flintstone'
+            })
+        ...(下面相同)
+
+    .3 多个并发
+        axios.all([getUserAccount(), getUserPermissions()])
+            .then(axios.spread(function (acct, perms) {
+            // 两个请求现在都执行完成
+        }));
+
+    .4 通过向 axios 传递相关配置来创建请求
+        // 发送 POST 请求
+            axios({
+                method: 'post',
+                url: '/user/12345',
+                data: {
+                    firstName: 'Fred',
+                    lastName: 'Flintstone'
+                    }
+            });     
+
+    .5注意事项:
+     利用post,传参,是传递的json格式,在服务器中需要导入(body-parse模块)设置
+     app.use(bodyParser.json()),才能在req.boyd中拿到值
+
+       使用bodyParser.urlencoded({ extended: false }),使node后台支持了第一种请求体. application/x-www-form-urlencoded : name=zhagnsan&age=20
+       使用bodyParser.json(),使node后台支持了第二种请求体.application/json         :{name:'zhagnsan',age=20}
+       !! (内部实现机制: 对所有请求调用bodyParser.urlencoded({ extended:false })对请求进行处理,
+        // ps:  extended:false false,表示利用queryString系统模块对参数的值进行处理;
+        //  true用另一个第三方模块QS来处理参数(更强大,但目前可以不用)
+        //   ..1检测当前请求中是否包含了请求参数,包含则接收,并将请求参数转换成对象类型
+        //   ..2为req这个参数添加一个body属性,将请求参数的值赋给了req.body属性

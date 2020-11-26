@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>axios基本使用</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <input type="button" value="get请求" id="getbtn" />
+    <input type="button" value="post请求" id="postbtn" />
+  </body>
+  <!-- 用服务器开启这个网页 localhost:3000/04axios基本使用.html -->
+  <script>
+    var getbtn = document.querySelector("#getbtn");
+    var postbtn = document.querySelector("#postbtn");
+
+    getbtn.onclick = function () {
+      //借助node学习中的博客管理系统的服务器
+      axios.get("http://localhost:3000/getbtn?num=3").then(
+        function (response) {
+          console.log(response);
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+    };
+
+    postbtn.onclick = function () {
+      //借助node学习中的博客管理系统的服务器
+      axios.post("http://localhost:3000/postbtn", { username: "jack" }).then(
+        //注意这里向后台传递的时候 Content-Type:application/json ,但这里传过去的是对象,所以后台接收不到参数
+        function (response) {
+          console.log(response);
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+    };
+  </script>
+</html>
