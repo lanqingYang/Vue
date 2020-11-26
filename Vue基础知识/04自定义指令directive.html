@@ -39,27 +39,21 @@
         <li>el：绑定的元素</li>
         <li>binding：一个对象，包含属性：</li>
         <ol>
-          <li>name：指令名</li>
-          <li>value：指令绑定值</li>
+          <li>!name：指令名</li>
+          <li>!value：指令绑定值(指令后面=那一坨)</li>
           <li>
             oldValue：指令绑定的前一值，仅在update与componentUpdate钩子中可用，无论值是否改变
           </li>
           <li>
             expression：绑定值得表达式或变量名，eg：v-my-directive='1+1',expression值为'1+1
           </li>
-          <li>
-            arg:传给指令的参数，v-my-directive：foo， arg为foo。
-          </li>
+          <li>arg:传给指令的参数，v-my-directive：foo， arg为foo。</li>
           <li>
             modifiers：一个包含修饰符的对象，v-my-directive：foo.bar,修饰符对象modifiers值{foo：true，bar：true}
           </li>
         </ol>
-        <li>
-          vnode：Vue编译生成的虚拟节点
-        </li>
-        <li>
-          oldVnode：上一个虚拟节点，仅在update与componentUpdate钩子中可用
-        </li>
+        <li>vnode：Vue编译生成的虚拟节点</li>
+        <li>oldVnode：上一个虚拟节点，仅在update与componentUpdate钩子中可用</li>
       </ol>
       <hr />
       <div id="app3" v-runoob:hello.a.b="message"></div>
@@ -71,7 +65,7 @@
       v-simple="{color:'green',text:'没有钩子函数的小练习,利用bingding对象的value值获取文本和更改颜色'}"
     ></div>
   </body>
-  <!-- 不需要钩子函数的时候 -->
+  <!-- 4.不需要钩子函数的时候 -->
   <script>
     new Vue({
       el: "#app4",
@@ -84,7 +78,7 @@
     });
   </script>
 
-  <!-- 钩子函数参数的使用 -->
+  <!-- 3. 钩子函数参数的使用 -->
   <script>
     Vue.directive("runoob", {
       bind: function (el, binding, vnode) {
@@ -116,7 +110,7 @@
       },
     });
   </script>
-  <!-- 局部 -->
+  <!-- 2. 局部 -->
   <script>
     new Vue({
       el: "#app2",
@@ -124,14 +118,14 @@
         //注意增加的指令名字可以首字母大写，但是其他字母不能大写
         placeholder: {
           inserted: function (el) {
-            el.value = "请输入一些内容";
+            el.placeholder = "请输入一些内容";
           },
         },
       },
     });
   </script>
 
-  <!-- 全局 -->
+  <!-- 1. 全局 -->
   <script>
     //   注册全局指令v-focus  注册全局 注意directive 不加s
     Vue.directive("focus", {

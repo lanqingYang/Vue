@@ -4,7 +4,7 @@ const path=require('path');
 const bodyParser=require('body-parser');
 const app=express();
 //静态资源访问路径
-app.use(express.static(path.join(__dirname,'Vue基础知识')))
+app.use(express.static(path.join(__dirname,'Vue基础知识','案例')))
 
 //要用bodyparser就要设置这个东西
 // (内部实现机制: 对所有请求调用bodyParser.urlencoded({ extended:false })对请求进行处理,
@@ -21,6 +21,77 @@ app.use(express.static(path.join(__dirname,'Vue基础知识')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//06天气数据
+const weatherLists=[{
+    city:'深圳',
+    forecast:[{
+        date:'星期一',
+        high:'高温 29°C',
+        low:'低温 22°C',
+        type:'晴'
+    },
+    {
+        date:'星期二',
+        high:'高温 25°C',
+        low:'低温 21°C',
+        type:'多云'
+    }
+]
+},{
+    city:'北京',
+    forecast:[{
+        date:'星期一',
+        high:'高温 11°C',
+        low:'低温 6°C',
+        type:'雪'
+    },
+    {
+        date:'星期二',
+        high:'高温 14°C',
+        low:'低温 2°C',
+        type:'雨夹雪'
+    }
+]
+},{
+    city:'上海',
+    forecast:[{
+        date:'星期一',
+        high:'高温 30°C',
+        low:'低温 27°C',
+        type:'晴'
+    },
+    {
+        date:'星期二',
+        high:'高温 35°C',
+        low:'低温 24°C',
+        type:'阴'
+    }
+]
+}
+]
+
+
+//06天气查询
+app.get('/weather_mini',(req,res)=>{
+    //拿到get参数
+    let {city}=req.query;
+    let  result= weatherLists.find((item)=>{
+        return item.city==city;
+    })
+    if(result){
+        res.send(result);
+    }else{
+        res.send('没有该城市的数据')
+    }
+
+})
+
+
+// 05 axios+vue
+app.get('/getNum',(req,res)=>{
+    var num=Math.random();
+    res.send({num});
+})
 
 
 //04axios-get按钮

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>天气案例查询</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <style>
+    li {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      margin-right: 6px;
+      color: orange;
+    }
+    .weather-list li {
+      float: left;
+      text-align: center;
+      margin-left: 30px;
+    }
+  </style>
+  <body>
+    <div id="app">
+      <div class="search-form">
+        <input type="text" @keyup.enter="searchWeather" v-model="city" />
+        <button class="search" @click="searchWeather">搜索</button>
+      </div>
+
+      <div class="haotkey">
+        <a
+          href="javascript:void(0);"
+          v-for="(city,index) in cities"
+          @click="changeCity(city)"
+          >{{city}}</a
+        >
+      </div>
+
+      <ul class="weather-list">
+        <li v-for="item in weatherList">
+          <p><strong>{{item.date}}</strong></p>
+          <p>最高温度:{{item.high}}</p>
+          <p>最低温度:{{item.low}}</p>
+          <p>天气:{{item.type}}</p>
+        </li>
+      </ul>
+    </div>
+  </body>
+  <!-- 引入案例需要的js文件 -->
+  <script src="/06weather.js"></script>
+</html>

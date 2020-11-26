@@ -24,6 +24,7 @@
       computed: {},
       watch: {
         kilometers: function (val) {
+          //val表示kilometers当前的最新值
           this.kilometers = val;
           this.meters = this.kilometers * 1000;
         },
