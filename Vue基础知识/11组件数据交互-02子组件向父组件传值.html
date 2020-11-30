@@ -18,8 +18,11 @@
     <div>
       <div id="counter-event-example">
         <p>{{total}}</p>
-        <button-counter v-on:increment="incrementTotal()"> </button-counter>
-        <button-counter v-on:increment="incrementTotal()"> </button-counter>
+        <!-- 通过$even来接收子组件穿过来的参数 -->
+        <button-counter v-on:increment="incrementTotal($event)">
+        </button-counter>
+        <button-counter v-on:increment="incrementTotal($event)">
+        </button-counter>
       </div>
     </div>
   </body>
@@ -29,8 +32,10 @@
       counter: 0,
     };
     Vue.component("button-counter", {
-      template:
-        "<button v-on:click='incrementHandler'>点击了{{counter}}次</button>",
+      template: `<div>
+        <button @click="$emit('increment',10)">每次+10</button>
+        <button v-on:click='incrementHandler'>每次+5,点击了{{counter}}次</button>
+        </div>`,
       // 这里的data是一个函数,而不是一个对象,好处是每个被返回的对象独立拷贝,如果data是一个对象,就会影响到其他的实例
       data: function () {
         return {
@@ -46,7 +51,7 @@
         incrementHandler: function () {
           this.counter += 1;
           //触发 父级的@increment
-          this.$emit("increment");
+          this.$emit("increment", 5); //添加参数
         },
       },
     });
@@ -56,8 +61,8 @@
         total: 0,
       },
       methods: {
-        incrementTotal: function () {
-          this.total += 1;
+        incrementTotal: function (val) {
+          this.total += val;
         },
       },
     });

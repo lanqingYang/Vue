@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>props属性值类型</title>
+  </head>
+  <!-- 
+      静态传值,props类型为string
+      动态传值: string,number,boolean,array,object
+   -->
+  <body>
+    <!-- 最后一个pnum1 为静态绑定,输出的数据类型为string-->
+    <div id="app">
+      <menu-list
+        :pstr="pstr"
+        :pnum="pnum"
+        :pbool="pbool"
+        :parr="parr"
+        :pobj="pobj"
+        pnum1="12"
+      ></menu-list>
+    </div>
+  </body>
+  <script>
+    Vue.component("menu-list", {
+      props: ["pstr", "pnum", "pbool", "parr", "pobj", "pnum1"],
+      template: `
+      <div>
+        <div>{{pstr}}</div>
+        <div>{{pnum}}</div>
+        <div>{{pbool}}</div>
+        <ul>
+            <li :key='index' v-for='(item,index) in parr'>{{item}}</li>
+        </ul>
+        <div>
+            <span>{{pobj.name}}</span>
+            <span>{{pobj.age}}</span>
+        </div>
+        <div>{{typeof pnum1}}</div>
+      </div>
+      `,
+    });
+
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        pstr: "父组件内容",
+        pnum: 12,
+        pbool: true,
+        parr: ["pink", "red", "blue"],
+        pobj: {
+          name: "zhangsan",
+          age: 1,
+        },
+      },
+    });
+  </script>
+</html>
