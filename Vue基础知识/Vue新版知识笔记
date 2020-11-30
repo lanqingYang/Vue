@@ -105,12 +105,12 @@ Vue网络应用 axios+vue
         //   ..2为req这个参数添加一个body属性,将请求参数的值赋给了req.body属性
 
 Vue常用特性
-    .1表单操作 v-model (03)
+    5. 表单操作 v-model (03)
         表单域修饰符: number:转换为数值.
                      trim:去掉空格(两端的)
                      lazy: 将input事件转换为change事件
 
-    .2自定义指令 directive/directives (04!!)
+    6. 自定义指令 directive/directives (04!!)
         //注意增加的指令名字可以首字母大写，但是其他字母不能大写!!
        ` 全局定义: Vue.directive('focus',{
                         inserted:function(el){
@@ -123,13 +123,110 @@ Vue常用特性
         `带参数的自定义指令 
               v-simple="{color:'green',text:'没有钩子函数的小练习,利用bingding对象的value值获取文本和更改颜色'}"
 
-    .3计算属性(05) conputed
+    .3计算属性(05) computed
        与方法的区别: 计算属性是基于他们的依赖进行缓存的,方法不存在缓存
 
-    .4过滤器
-    
-    .5侦听器(06) watch
+(2020-11-30)
+    7. 过滤器 filter(07)
+        格式化数据,比如将字符串格式转化为首字符大写,将日期格式化为指定格式等
+        注意:
+            全局:Vue.filter('过滤器名称',function(val){//处理逻辑})
+            局部:
+                filters: {
+                //名称，规则(实现逻辑)
+                upper1: function (val) {
+                return val.charAt(0).toUpperCase() + val.slice(1);
+                },
+            },
+            }
+
+
+        使用: (插值表达式\属性绑定)
+            <div>{{msg | upper1}}</div>
+            <div>{{msg | upper | lower}}</div>
+            <div :abc="msg| upper">></div>
+
+            可以带参数: <div>格式化后的时间{{date| format('yyyy-MM-dd')}}</div>
+            在处理逻辑中:function(val,arg1,arg2..) 'yyyy-MM-dd'对应arg1参数
+
+
+    8. 侦听器(06) watch
         数据变化时,执行异步或开销较大的操作使用
         数据一旦发生变化,就执行侦听器所绑定的方法
 
-    .6生命周期
+    9. 生命周期
+      .1 挂载(初始化相关属性)
+            ..1 beforeCreate 数据观测和事件配置前
+            ..2 created ! 在实例创建完后被立即调用
+            ..3 beforeMount 挂载前
+            ..4 mounted !! 
+                一旦被触发,就代表初始化完成,页面中模板的内容就已经存在了,就可以向里面填充数据.
+                (才能向{{message}}中填充数据)
+
+      .2 更新(元素或组件的更变操作)
+            ..1 beforeUpdate 更新时,,发生在虚拟DOM打补丁前
+            ..2 updated        由于数据更改导致的虚拟DOM重新渲染打补丁,在这之后调用
+
+      .3 销毁(销毁相关属性)
+            ..1 beforeDestroy 销毁前
+            ..2 destroyed     销毁后
+
+vue中数组
+    10. 数组
+        变异方法: 改变原始数组
+         push,unshift,pop,shift,sort,reverse, splice(开始位置,删除个数)删除
+        非变异方法: 不改变原数组 返回一个新数组
+         filter,concat,  slice(begin,end)截取
+
+        数组响应式变化:
+            通过Vue.set(vm.items,indexOfItem,newValue)  数组名称、索引、要处理的数组的值
+            vm.$set(vm.items,indexOfItem,newValue) 
+            这俩既可以处理数组的索引，也可以处理对象的属性，并且都是响应式的 作用相同
+
+            用索引的方式修改数据不是响应式的
+                 vm.list[1] = "lemon"; //不会进行响应式改变,不能直接改页面值不会刷新（但是后台值会改变）
+            响应式:vm.$set(vm.list, 1, "lemon");
+            对对象: vm.$set(vm.info, "gender", "female");
+                    Vue.set(vm.info, "interst", "sing");
+
+
+Vue组件化开发\
+    目标:
+        .1 知道组件化开发的思想
+        .2 组件的注册方式
+        .3 组件之间的数据交互方式
+        .4 组件插槽的用法
+        .5 Vue调试工具的用法
+        .6 基于组件的方式实现业务功能
+
+
+    11.组件
+        (.1-.4 : 10-01)
+        .1 当一个组件被定义， data 必须声明为返回一个初始数据对象的函数，因为组件可能被用来创建多个实例。
+           如果 data 仍然是一个纯粹的对象，则所有的实例将共享引用同一个数据对象！
+           通过提供 data 函数，每次创建一个新实例后，我们能够调用 data 函数，从而返回初始数据的一个全新副本数据对象。
+
+        .2 Vue.component('组件名称',{data:function(){return {}},template:``,methods:{}...})
+           data必须是一个函数,原因见上
+
+        .3 组件的模板内容必须是单个根元素  (组件模板可以是模板字符串)
+            比如一个button.一个div 不能多个. 最外层不能有兄弟关系的标签
+            但可以是父子关系
+            <div><button></button><button></button><div>
+        
+        .4 组件命名方式
+            `短横线 my-component
+            `驼峰   MyComponent  要用到普通标签里面而不是template里面,就必须写成短横线式 <my-component>,规则:首字母小写,单词间-隔开
+                                在template中用<MyComponent>没有问题
+
+        .5 局部组件(10-02)
+            局部组件只能在注册他的父组件中使用(注意 自定义指令和自定义过滤器也是这样的)
+
+            var ComponentA={data:function(){return { } },template:``}
+            (实例对象中vm) components:{'component-a':ComponentA}
+
+
+    
+
+
+

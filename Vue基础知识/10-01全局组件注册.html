@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <title>组件注册</title>
+  </head>
+  <body>
+    <div id="app">
+      <button-conter></button-conter><br />
+      <button-conter></button-conter><br />
+      <hello-world></hello-world><br />
+    </div>
+  </body>
+  <script>
+    /*
+        组件注册
+         `短横线 my-component
+            `驼峰   MyComponent  要用到普通标签里面而不是template里面,就必须写成短横线式 <my-component>,规则:首字母小写,单词间-隔开
+                                在template中用<MyComponent>没有问题
+     */
+    Vue.component("HelloWorld", {
+      data: function () {
+        return {
+          msg: "helloworld",
+        };
+      },
+      template: `<div>{{msg}}</div>`,
+    });
+    Vue.component("button-conter", {
+      data: function () {
+        return {
+          count: 0,
+        };
+      },
+      //或者直接写@click="count++"
+      //   组件的模板内容必须是单个根元素
+      template: `
+      <div>
+      <button @click="handle">点击了{{count}}次</button>
+      <HelloWorld></HelloWorld>
+      </div>
+      `,
+      methods: {
+        handle: function () {
+          this.count++;
+        },
+      },
+    });
+
+    var vm = new Vue({
+      el: "#app",
+      data: {},
+    });
+  </script>
+</html>

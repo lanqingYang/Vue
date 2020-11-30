@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>案例 验证用户名是否可用</title>
+  </head>
+  <!-- 
+      通过v-model 实现数据绑定
+      提供提示信息
+      侦听器监听数据信息的变化
+      需要修改触发的事件 --失去焦点的时候触发
+   -->
+  <body>
+    <div id="app">
+      请输入用户名:<input type="text" v-model.lazy="username" />
+      <span>{{tip}}</span>
+    </div>
+  </body>
+  <script>
+    /* 
+    侦听器: 
+    1.采用侦听器监听用户名的变化
+    2.采用后台接口进行验证
+    3.根据验证的结果调整提示信息
+    */
+    var vue = new Vue({
+      el: "#app",
+      data: {
+        username: "",
+        tip: "",
+      },
+      methods: {
+        checkName: function (uname) {
+          //调用接口,但是可以使用定时任务的方式模拟接口调用
+          var that = this;
+          setTimeout(function () {
+            //模拟接口调用
+            if (uname == "admin") {
+              that.tip = "该用户名已存在";
+            } else {
+              that.tip = "用户名合法";
+            }
+          }, 2000);
+        },
+      },
+      watch: {
+        username: function (val) {
+          //调用后台接口验证用户名的合法性
+          this.checkName(val);
+          //修改提示信息
+          this.tip = "正在验证....";
+        },
+      },
+    });
+  </script>
+</html>

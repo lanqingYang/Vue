@@ -6,6 +6,17 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>过滤器</title>
   </head>
+  <!-- 
+      全局:Vue.filter('过滤器名称',function(val){//处理逻辑})
+       局部: filters: {
+        //名称，规则(实现逻辑)
+        },
+      
+    使用: (插值表达式\属性绑定)
+      <div>{{msg | upper1}}</div>
+      <div>{{msg | upper | lower}}</div>
+      <div :abc="msg| upper">></div>
+   -->
   <body>
     <p>格式化数据、处理数据</p>
     <div id="app">
@@ -40,8 +51,6 @@
         return ret;
       }
     });
-
-   
 
     new Vue({
       el: "#app",

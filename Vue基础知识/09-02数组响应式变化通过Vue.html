@@ -17,8 +17,8 @@
       <div>
         <div>{{info.name}}</div>
         <div>{{info.age}}</div>
-        <div>{{info.gender}}</div>
-        <div>{{info.interst}}</div>
+        <div v-show="info.gender">{{info.gender}}</div>
+        <div v-if="info.interst">{{info.interst}}</div>
       </div>
     </div>
   </body>

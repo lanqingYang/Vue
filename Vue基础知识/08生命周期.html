@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>vue生命周期学习</title>
-    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
     <div id="app">
       <h1>{{message}}，这是在outerHtml中</h1>
+      <button @click="update">更新</button>
+      <button @click="destroy">销毁</button>
     </div>
   </body>
   <script>
@@ -17,6 +19,14 @@
       el: "#app",
       data: {
         message: 10,
+      },
+      methods: {
+        update: function () {
+          this.message = "hello";
+        },
+        destroy: function () {
+          this.$destroy(); //vm被销毁
+        },
       },
 
       //创建前
