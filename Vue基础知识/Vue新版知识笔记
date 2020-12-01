@@ -355,7 +355,7 @@ Vue前后端交互
 
             .1 特征：
                 ..1  支持浏览器和node.js
-                ..2  支持promise
+                ..2  基于promise实现
                 ..3  能拦截请求和响应
                 ..4  自动转换JSON数据
 
@@ -387,7 +387,34 @@ Vue前后端交互
 
               注意：后台用了res.json ({name:'ada'})来返回值，前端的ret.data就是一个json格式的了
 
-            .6全局配置
+            .6 全局配置
                 ..1 axios.default.timeout=3000 //超时时间
                 ..2 axios.default.baseURL='http://localhost:3000/Vue基础知识'  //默认地址
                 ..3 axios.default.headersp['自定义名称']='...'//设置请求头 做登陆时用
+
+            .7 axios拦截器！！！！
+               .1 请求拦截器  （在请求发出之前设置一些信息）
+                  axios.interceptors.request.use(function(config){
+                      return config;
+                  },function(err){
+                      //处理响应的错误信息
+                  })s
+
+                .2 响应拦截器
+                   axios.interceptors.response.use(function(res){
+                      return res;
+                  },function(err){
+                      //处理响应的错误信息
+                  })
+
+            20. async/await 
+              .1 基本用法（16-01）
+               async/await ES7引入的新语法，方便异步操作
+               async关键字用于函数上(返回值是Promise实例对象！！！)
+               await关键字用于async函数中(await可以得到异步的结果)  await后面要跟一个promise实例对象
+
+                由于返回的是一个promise对象，所以要拿到真实的值，需要调用.then(data=>data) 来拿到
+             
+              .2 处理多个异步请求(16-02)
+                次序await，保证执行顺序。
+            

@@ -36,6 +36,14 @@ app.all('*', function (req, res, next) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//16 async/await
+app.get('/async1',(req,res)=>{
+    res.send('1')
+})
+app.get('/async2',(req,res)=>{
+    res.send(req.query.info)
+})
+
 
 //15-02axios传递参数
 app.get('/axios',(req,res)=>{

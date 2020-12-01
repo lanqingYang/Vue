@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./axios.min.js"></script>
+    <title>axios拦截器</title>
+  </head>
+  <!-- 
+
+ -->
+  <body>
+    <script>
+      //1.请求拦截器
+      axios.interceptors.request.use(
+        function (config) {
+          console.log(config);
+          config.headers.mytoken = "nihao";
+          return config;
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+
+      //2.响应拦截器
+      axios.interceptors.response.use(
+        function (ret) {
+          var data = ret.data;
+          return data;
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+
+      axios.get("http://localhost:3000/axios-json").then((data) => {
+        //因为响应拦截器中进行了设置 所以这里的data就是真实值，而不是对象
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
