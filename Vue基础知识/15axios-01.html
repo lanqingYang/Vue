@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>axios</title>
+    <script src="/axios.min.js"></script>
+  </head>
+  <body>
+    <script>
+      axios.get("/adata").then(function (ret) {
+        console.log(ret);
+        // 注意获取数据！是 ret.data data属性是固定的，用于获取实际数据
+        console.log(ret.data); // data: 实际响应回来的数据
+        console.log(ret.headers); // headers: 响应头信息  obj
+        console.log(ret.status); //响应状态码
+        console.log(ret.statusText); // status： 响应状态信息
+      });
+
+      //axios内部直接将返回值的data处理为json格式了，后台用了res.json ({})，所以这里的data是一个json格式的
+      axios.get("/axios-json").then((ret) => {
+        console.log(ret.data);
+      });
+    </script>
+  </body>
+</html>

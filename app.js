@@ -21,6 +21,12 @@ app.use(express.static(path.join(__dirname,'Vue基础知识','案例')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+
+
+
+
+
 //06天气数据
 const weatherLists=[{
     city:'深圳',

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/axios.min.js"></script>
+
+    <title>axios</title>
+  </head>
+  <body>
+    <script>
+      /*------------ get请求参数，  delete 与get类似，就不多写一遍了-------------  */
+      //  1. 通过url传递
+      axios.get("/axios?id=123").then((ret) => {
+        console.log(ret.data);
+      });
+      //2.   restful风格
+      axios.get("/axios/345").then((ret) => {
+        console.log(ret.data);
+      });
+      //3.params选项传递参数  ,这个后台的路由响应还是1的方式
+      axios
+        .get("/axios", {
+          params: {
+            id: 678,
+          },
+        })
+        .then((ret) => {
+          console.log(ret.data);
+        });
+
+      /*------------ post请求参数-------------  */
+      //通过选项传递参数  默认 application/json
+      axios
+        .post("/axios", {
+          username: "zhagnsan",
+          age: 1,
+        })
+        .then((ret) => {
+          console.log(ret.data);
+        });
+      //通过 URLSearchParams传递参数  application/x-www-form-urlencoded
+      var params = new URLSearchParams();
+      params.append("username", "tanghao");
+      params.append("age", 21);
+      //   console.log(params);
+      axios.post("/axios", params).then((ret) => {
+        console.log(ret.data);
+      });
+
+      /* -----put请求 ------与post类似,都支持json和传统表单数据  */
+      //restful
+      axios
+        .put("/axios/111", {
+          username: "dudu",
+          age: 2,
+        })
+        .then((ret) => {
+          console.log(ret.data);
+        });
+      //传统
+      axios
+        .put("/axios", {
+          username: "安安",
+          age: 11,
+        })
+        .then((ret) => {
+          console.log(ret.data);
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise处理ajax请求</title>
+  </head>
+  <body></body>
+  <script>
+    function queryData(url) {
+      return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", url);
+        xhr.send(null);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState != 4) return;
+          if (xhr.status == 200) {
+            //处理正常情况
+            resolve(xhr.responseText);
+          } else {
+            //异常
+            reject("出错了");
+          }
+        };
+      });
+    }
+    // 发送一个ajax请求-----------------
+    // queryData("/data").then(
+    //   function (data) {
+    //     console.log(data);
+    //   },
+    //   function (err) {
+    //     console.log(err);
+    //   }
+    // );
+    //
+    //------------------发送多个ajax请求  3个 通过链式调用
+    queryData("/data?name=world")
+      .then(function (data) {
+        console.log(data);
+        return queryData("/data?name=tom");
+      })
+      .then(function (data) {
+        console.log(data);
+        return queryData("/data?name=jerry");
+      })
+      .then(function (data) {
+        console.log(data);
+      })
+      .then(function (data) {
+        return new Promise(function (resolve, reject) {
+          setTimeout(() => {
+            resolve(123);
+          }, 1000);
+        });
+      })
+      .then(function (data) {
+        // console.log(data);
+        return "hellow"; //返回一个普通字符串
+      })
+      .then((data) => {
+        console.log(data); //then调用 data就为上面return的普通值
+      });
+
+    /* ----------对象方法 .all() .race() */
+    var p1 = new queryData("/data2?name=p1");
+    var p2 = new queryData("/data2?name=p2");
+    var p3 = new queryData("/data2?name=p3");
+    //.all()所有异步任务完成后，得到结果
+    // Promise.all([p1, p2, p3]).then(function (result) {
+    //   console.log(result); //['heollow p1','heollow p2','heollow p3']
+    // });
+    Promise.race([p1, p2, p3]).then(function (result) {
+      console.log(result); //返回最快执行的异步任务的结果
+    });
+  </script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fetch</title>
+  </head>
+  <body></body>
+  <script>
+    /* 
+        fetch API基本用法
+      */
+    fetch("/fdata")
+      .then(function (data) {
+        //text()方法属于fetchAPI的一部分，它返回一个promise实例对象，用于获取后台返回的数据
+        console.log(data);
+        // console.log(data.text());
+        return data.text();
+      })
+      .then((data) => {
+        //真实数据
+        console.log(data);
+      });
+  </script>
+</html>

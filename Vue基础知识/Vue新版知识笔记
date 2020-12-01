@@ -216,7 +216,7 @@ Vue组件化开发
         
         .4 组件命名方式
             `短横线 my-component
-            `驼峰   MyComponent  要用到普通标签里面而不是template里面,就必须写成短横线式 <my-component>,规则:首字母小写,单词间-隔开
+            `驼峰   MyComponent  要用到普通标签里面（html中）而不是template里面,就必须写成短横线式 <my-component>,规则:首字母小写,单词间-隔开
                                 在template中用<MyComponent>没有问题
 
         .5 局部组件(10-02)
@@ -252,7 +252,142 @@ Vue组件化开发
             简单理解: 子组件触发事件 ($emit='事件名'),父组件逻辑处理(v-on:事件名='handle').  这里事件名要相同
             
 
+            $event??怎么用
+
+(2020-12-1)
+        14.非父子组件间传值
+                            事件中心
+                 (触发/监听)         (触发/监听 ) 
+            组件A                             组件B
+
+            事件中心： var eventHub=new Vue()
+            监听： eventHub.$on('自定义事件名称'，函数)
+            销毁： eventHub.$off('自定义事件名称')
+            触发事件：eventHub.$emit('自定义事件名称'，arg1...)
+        
+        15.组件插槽
+            .1普通组件插槽(12-01)
+             作用：父组件向子组件传递内容
+             <alert-box>sayHi</alert-box>  父组件中有值， 值会传递到子组件中的模板的<slot></slot>标签中
+
+            .2具名插槽(12-01)
+             根据名字进行匹配，没有匹配的根据默认的内容显示，要有slot标签，父组件中内容才会有显示的地方且要对应slot的名字
+             (一个插槽中想要填充多个内容)利用template标签，可以简化写法。 template标签不会显示到DOM树上，检查中不会存在 通过在template标签中设定 v-slot='名称' 显示对应的内容
+
+            .3作用域插槽(12-02 看例子理解把)
+              应用场景：父组件对子组件的内容进行加工处理
+              v-slot：default='' 可以简写为 #default=''
+
+
+----------任务列表(12)为分割线-- 12之前用app.js服务器--之后用app1.js-----
+
+Vue前后端交互
+        .1 前后端交互模式
+        .2 promise 
+        .3 fetch进行接口调用
+        .4 axios接口调用
+        .5 async/await方式调用接口
+
+        16.交互模式
+          .1 接口调用方式
+             ..1 原生ajax
+             ..2 基于jQuery的ajax (jQuery主要是进行DOM操作，Vue很少涉及到DOM操作)
+             ..3 fetch
+             ..4 axios
+
+        .2 url 地址
+        普通url地址 ： 协议://域名或ip地址:端口/path?参数#锚点
+        Restful形式的URL：
+        GET 查询,POST 添加 ,PUT 修改 ,DELETE 删除
+        符合规则的： (传参方式 /参数)
+        http：//www.hello.com/books               GET,POST
+        http：//www.hello.com/books/123           PUT,DELETE
+
+
+        17.promise(13)
+            .1异步调用： 定时任务、Ajax、事件函数
+            resolve和reject两个参数用于处理成功共和失败两种情况，并通过p.then/.catch获取处理结果
+
+            .2 then中函数的返回值
+              promise实例对象：则该实例对象会调用下一个then
+              普通值： 返回的普通值会直接传递给下一个then，通过then参数中函数的参数接收该值
+                     （默认返回resolve状态的promise对象！！！）
+            
+            .3 实例方法
+             .then() .catch()获取异常信息 .finally()是否成功都会调用
+
+            .4 对象方法
+             Promise.all()  并发处理多个异步任务，所有任务处理完才能得到结果
+             Promise.race() ~，只要一个处理完就能得到结果
+
     
+        18. fetch
+          基于promise实现
+          .1 语法结构  fetch(url).then(fn2).then(fn3)....catch(fn)
+
+          .2 需要调用两次then来获取真实数据
+           第一次 利用data.text() 拿到数据，但是它返回的是promise对象，所以需要第二次.then 来拿到真实data
+
+          .3 参数传递
+             配置： ..1 method(String) : GET查询,POST添加,PUT修改,DELETE删除
+                    ..2 body(String)： HTTP的请求参数
+                    ..3 headers(Object): HTTP的请求头，默认为{}
+
+             fetch('路径',{
+                 method:'',
+                 body:,     //分为 name=zhagnsan&age=1 和 JSON.stringify({name:'zhagnsan',age:2})
+                 headers:{}  //分为application/x-www-form-urlencoded 和 application/json 的Content-Type属性
+             }).then(data=> data.text()).then(data=>data)
+
+             传递（12-02）
+              在后台：(注意 导入body-parser模块 app.use(bodyParser.json());app.use(bodyParser.urlencoded({ extended: false }))
+
+               .1 运用restful风格 路径/path/:id ,拿路径中参数:req.params.id 拿传入的参数：req.body.username
+               .2 普通url传参 拿传入的参数 req.query.username
+               .3 post 拿参数 req.body.username 
+            
+            .4 fetch响应结果（12-02）
+                text(): 返回数据处理成字符串类型
+                json(): 返回结果和 JSON.parse(responseText)一样
 
 
+        19. axios!!!!!
 
+            .1 特征：
+                ..1  支持浏览器和node.js
+                ..2  支持promise
+                ..3  能拦截请求和响应
+                ..4  自动转换JSON数据
+
+            .2 基本用法
+              axios.get('/adata').then(ret=>{console.log(ret.data)})
+              注意获取数据！是 ret.data data属性是固定的，用于获取实际数据
+
+            .3 常用API 
+               get查询，post添加，put修改，delete修改   (都可用restful形式) 
+
+            .4 参数传递！！！！！  (15-02)!!
+                注意：get和delete相似  (url,restful,params选项参数三种方式)
+                      post和put相似    (选项传递参数 application/json默认 与 application/x-www-form-urlencoded)
+                                           
+                    post和put默认是以json数据格式传递的，如果要用字符串拼接的格式要做出设置
+                      var params = new URLSearchParams();
+                        params.append("username", "tanghao");
+                        params.append("age", 21);
+                        //   console.log(params);
+                        axios.post("/axios", params).then((ret) => {
+                        console.log(ret.data);
+                        });             
+
+            .5 响应结果的主要属性
+                data: 实际响应回来的数据
+                headers: 响应头信息  obj
+                status： 响应状态信息
+                statusText：响应状态信息
+
+              注意：后台用了res.json ({name:'ada'})来返回值，前端的ret.data就是一个json格式的了
+
+            .6全局配置
+                ..1 axios.default.timeout=3000 //超时时间
+                ..2 axios.default.baseURL='http://localhost:3000/Vue基础知识'  //默认地址
+                ..3 axios.default.headersp['自定义名称']='...'//设置请求头 做登陆时用

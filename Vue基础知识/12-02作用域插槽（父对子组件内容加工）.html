@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>作用域插槽（父组件对子组件进行加工）</title>
   </head>
   <style>
@@ -17,8 +17,11 @@
     <div id="app">
       <!-- 通过组件绑定的方式，传值给父组件，父组件通过props接收 -->
       <fruit-list :list="list">
-        <!-- slot-scope="slotProps": 在父组件中得到子组件中的数据，再进行加工。尽量不去改变子组件 -->
-        <template slot-scope="slotProps">
+        <!-- v-slot="slotProps": 在父组件中得到子组件中的数据，再进行加工。尽量不去改变子组件 
+        template中的代码 指定了子组件中哪条数据高亮
+          v-slot:default 简写v-slot 也可以写为 #defalt(在有参数的时候才可以简写为#)
+      -->
+        <template v-slot="slotProps">
           <!-- slot-scope 属性，后面的名字是自定义的，一般使用slotProps，通过它可以得到子组件中绑定的info属性（这个info是下面子组件中自定义的可以随意更改名字） 
         通过它就可以得到子组件中的数据了，就可以进行加工的处理-->
           <strong v-if="slotProps.info.id==2" class="current">
