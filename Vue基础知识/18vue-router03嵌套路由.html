@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>嵌套路由</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <router-link to="/user">user</router-link>
+      <router-link to="/register">register</router-link>
+
+      <!-- 路由占位符，未来通过路由规则匹配到的组件将会被渲染到router-view所在的位置 -->
+      <router-view></router-view>
+    </div>
+    <script>
+      const User = {
+        template: `<h1>User</h1>`,
+      };
+
+      const Register = {
+        template: `<div>
+                        <h1>Register 组件</h1>
+                        <hr>
+                        <!-- 子路由链接 -->
+                        <router-link to='/register/tab1'>tab1</router-link>
+                        <router-link to='/register/tab2'>tab2</router-link>
+
+                        <!-- 子路由占位符 -->
+                        <router-view></router-view>
+
+                    </div>`,
+      };
+
+      const Tab1 = {
+        template: `<h3>tab1 子组件</h3>`,
+      };
+      const Tab2 = {
+        template: `<h3>tab2 子组件</h3>`,
+      };
+
+      //创建路由实例对象
+      var router = new VueRouter({
+        //路由规则
+        //至少拥有 path 和 component
+        routes: [
+          //重定向，当用户访问 / 的时候跳转到 /user
+          { path: "/", redirect: "/user" },
+          { path: "/user", component: User },
+          {
+            path: "/register",
+            //children 表示子路由规则
+            children: [
+              { path: "/register/tab1", component: Tab1 },
+              { path: "/register/tab2", component: Tab2 },
+            ],
+            component: Register,
+          },
+        ],
+      });
+
+      var vm = new Vue({
+        el: "#app",
+        //挂载到vue实例对象上
+        router,
+      });
+    </script>
+  </body>
+</html>

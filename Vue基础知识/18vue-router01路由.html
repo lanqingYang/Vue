@@ -22,13 +22,13 @@
         是一个组件，用于设置一个导航链接，切换不同HTML内容。to属性为目标地址
       </p>
       <p>
-        <!-- 使用router-link  组件导航 传入to属性指定链接 -->
-        <!-- router-link被默认渲染成一个a标签 -->
-        <!-- tag 可设置渲染成哪种标签 同样也会监听点击 -->
-        <!-- event 声明触发导航的事件 -->
-        <!-- 关于属性 replace 和append ；replace回调与router.replace 而不是router.push() ,导航后不会留下history记录。
-            append 在当前相对路径添加其路径 例如从/a到相对路径b 没有配置append路径为/b，配置后路径为/a/b -->
-        <!-- exact-active-class: 精确匹配链接才激活对应class 比如/a  而active-class为模糊匹配 /a/b也能激活对应class -->
+        <!-- 使用router-link  组件导航 传入to属性指定链接, to属性默认会被渲染为href属性， to属性的值默认会被渲染为#开头的hash地址
+         router-link被默认渲染成一个a标签 
+         tag 可设置渲染成哪种标签 同样也会监听点击 
+         event 声明触发导航的事件 
+         关于属性 replace 和append ；replace回调与router.replace 而不是router.push() ,导航后不会留下history记录。
+            append 在当前相对路径添加其路径 例如从/a到相对路径b 没有配置append路径为/b，配置后路径为/a/b
+         exact-active-class: 精确匹配链接才激活对应class 比如/a  而active-class为模糊匹配 /a/b也能激活对应class -->
         <router-link
           to="/foo"
           tag="li"
@@ -43,31 +43,34 @@
         >
       </p>
       <!-- 路由出口 -->
-      <!-- 路由匹配到的组件渲染在这里 -->
+      <!-- 路由占位符：路由匹配到的组件渲染在这里 -->
       <router-view></router-view>
     </div>
   </body>
   <script>
     //1.定义路由组件（也可由其他文件import进来）
-    const Foo = { template: "<div>foo</div>" };
-    const Bar = { template: "<div>Bar</div>" };
+    const Foo = { template: "<h1>foo</h1>" };
+    const Bar = { template: "<h1>Bar</h1>" };
+
     //2.定义路由
-    //每个路由都应该映射一个组件
     const routes = [
+      //路由规则 每个路由都应该映射一个组件 ：至少包含path 和 component属性
+      //path: 表示当前路由规则匹配的hash地址 component： 当前路由规则对应要展示的组件
       { path: "/foo", component: Foo },
       { path: "/bar", component: Bar },
     ];
+
     //3.创建router实例，然后传‘routes’配置
     const router = new VueRouter({
       routes: routes, //可缩写为routes
     });
-    //4.创建和挂载根实例
+
+    //4.创建实例
     new Vue({
+      //挂载路由实例对象
       router,
     }).$mount("#app1");
   </script>
 
-  <script type="text/javascript">
-   
-  </script>
+  <script type="text/javascript"></script>
 </html>

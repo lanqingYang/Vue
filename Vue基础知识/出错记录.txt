@@ -13,3 +13,6 @@ props:['父组件数据名称'] ,并且将数据放到父组件下，不是一�
       props: ["username"],
       template: `  <div class="cart-title">{{username}}的购物车</div>`,
     };
+
+3. 自创模板语法：
+   文件=》首选项=》用户片段=》设置自己的模板语法即可 

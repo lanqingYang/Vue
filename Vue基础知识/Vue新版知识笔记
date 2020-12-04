@@ -1,7 +1,7 @@
 (2020-11-25)
     1. 概述
         .1 vue是js框架
-        .2 简化Dom操作
+        .2 简化om操作
         .3 响应式数据驱动
 
     2.  el:挂载点 
@@ -225,6 +225,8 @@ Vue组件化开发
             var ComponentA={data:function(){return { } },template:``}
             (实例对象中vm) components:{'component-a':ComponentA}
 
+        .6 补充 ： :is属性 指定那个组件就显示那个组件
+
 
 组件间数据交互
         12. 父组件向子组件传值(11-01)
@@ -418,3 +420,86 @@ Vue前后端交互
               .2 处理多个异步请求(16-02)
                 次序await，保证执行顺序。
             
+
+（2020-12-4）
+Vue前端路由  Vue-Router
+            .1 路由概念
+            .2 基本使用步骤
+            .3 嵌套路由使用步骤
+            .4 动态路由匹配用法
+            .5 命名路由用法
+            .6 编程式导航用法
+
+         21. 路由概念
+            路由本质：对应关系
+            .1 后端路由： 根据不同的用户的URL请求，返回不同的内容
+                        本质： URL请求地址与服务器资源之间的对应关系
+
+            .2  前端路由： 根据不同的 用户事件，显示不同的页面内容
+                        本质： 用户事件与用户处理函数之间的对应关系
+            Ajax前端渲染，能够提高性能（后端渲染，存在性能问题），但是不支持浏览器的前进后退操作。
+            SPA： Single Page Application：单页面应用程序，内容的变化通过Ajax局部更新实现、同时支持浏览器地址栏的前进和后退操作。
+                 实现原理：基于URL地址的hash（hash变化会导致浏览器记录访问历史的变化，但是hash的变化不会触发新的URL请求）
+                 实现SPA： 核心技术点 前端路由
+
+            .3 基于URL中的hash变化控制组件的切换(模拟路由-17)
+                通过事件： window.onhashchange
+                访问hash值：location.hash
+
+        22. Vue Router 
+           :不用自己去模拟路由了(17)
+            .1 包含功能
+                ..1 支持html5历史模式或hash模式
+                ..2 支持嵌套路由
+                ..3 支持路由参数
+                ..4 支持编程式路由
+                ..5 支持命名路由
+
+            .2 路由使用 步骤： （略复杂版本 18-01 简易版本18-02）
+                ..1 引入库文件  ：
+                    先引入vue 再引入vue-router
+
+                ..2 添加路由连接:
+                    使用router-link  组件导航 传入to属性指定链接，to属性的值默认会被渲染为#开头的hash地址
+                    router-link被默认渲染成一个a标签 
+                    tag 可设置渲染成哪种标签 同样也会监听点击 
+                    event 声明触发导航的事件 
+                    关于属性 replace 和append ；replace回调与router.replace 而不是router.push() ,导航后不会留下history记录。
+                    append 在当前相对路径添加其路径 例如从/a到相对路径b 没有配置append路径为/b，配置后路径为/a/b
+                    exact-active-class: 精确匹配链接才激活对应class 比如/a  而active-class为模糊匹配 /a/b也能激活对应class.
+
+                ..3 添加路由填充位： 
+                    <router-view></router-view> 未来通过路由规则匹配到的组件将会被渲染到router-view所在的位置
+                
+                ..4 定义路由组件 
+                    const User={template:`<h1>user</h1>`}
+
+                ..5 配置路由规则并创建路由实例
+                    ！！！注意 规则单词式 routes！！！ 路由时router！！！ 不一样！！
+                    const routes = [
+                    //路由规则 每个路由都应该映射一个组件 ：至少包含path 和 component属性
+                    //path: 表示当前路由规则匹配的hash地址！ component： 当前路由规则对应要展示的组件
+                    { path: "/user", component:User },
+                    ];
+
+                ..6 把路由挂载到Vue根实例中 
+                    vm实例中添加  router
+
+
+        23. 路由重定向 (18-02)
+             重定向： 用户在访问地址A的时候，强制用户跳转到地址C，从而展示特定的组件页面。
+             通过路由规则的redirect属性，指定一个新的路由地址，方便设置路由的重定向
+             { path: "/", redirect: "/user" },
+
+
+        24. 嵌套路由(18-03)
+             ·点击父路由连接显示模板内容
+             ·模板内又有子级路由链接
+             ·点击子级路由链接显示子集模板内容
+
+             父级路由通过children属性配置子集路由
+
+        25. 动态路由匹配
+            通过路由参数的模式进行路由匹配
+            { path: "/user/:id", component:User },
+            路由组件中通过 $route.params获取路由参数
