@@ -549,5 +549,19 @@ Vue前端路由  Vue-Router
                ..2 编程式导航 ： 通过 调用js形式的API实现导航的方式
                                 eg： 普通网页中 location.href
 
-            .2 常用编程式导航API： 
-                 
+            .2 常用 编程式导航API： 
+                 this.$router.push('hash地址')  //跳转到指定组件页面
+                 this.$router.go(n)             //在历史记录中向前/后n个
+
+                 !! router.push()方法的参数规则
+                  ..1 字符串（路径名）
+                    routre.push('/register')
+                
+                  ..2 对象
+                    router.push({path:'/home'})
+
+                  ..3 命名路由
+                    router.push({name:'user',params:{userId:123}})
+
+                  ..4 带查询参数，变成 /register?uname=lisi
+                    router.push({path:'/register',query:{uname:'lisi'}})

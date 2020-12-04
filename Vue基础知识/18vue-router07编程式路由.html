@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>编程式路由</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <router-link to="/user">user</router-link>
+      <router-link to="/register">register</router-link>
+
+      <!-- 路由占位符，未来通过路由规则匹配到的组件将会被渲染到router-view所在的位置 -->
+      <router-view></router-view>
+    </div>
+
+    <script>
+      const User = {
+        template: `<div>
+          <h1>User</h1>
+          <button @click='goRegister'>跳转到注册界面</button>
+          </div>`,
+        methods: {
+          goRegister() {
+            //这里的push 同样可以使用命名路由
+            this.$router.push("/register");
+          },
+        },
+      };
+
+      const Register = {
+        template: `<div>
+          <h1>Register</h1>
+          <button @click='goBack'>后退</button>
+          </div>`,
+        methods: {
+          goBack: function () {
+            //后退一个历史记录
+            this.$router.go(-1);
+          },
+        },
+      };
+
+      //创建路由实例对象
+      var router = new VueRouter({
+        //路由规则
+        //至少拥有 path 和 component
+        routes: [
+          //重定向，当用户访问 / 的时候跳转到 /user
+          { path: "/", redirect: "/user" },
+          { path: "/user", component: User },
+          { path: "/register", component: Register },
+        ],
+      });
+
+      var vm = new Vue({
+        el: "#app",
+        //挂载到vue实例对象上
+        router,
+      });
+    </script>
+  </body>
+</html>
