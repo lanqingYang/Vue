@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>路由组件传递参数</title>
+  </head>
+  <!-- 
+      在routes规则中设置：
+    1. props 为布尔值 ：路由组件可以拿到 $route.params.属性名 的值
+    2. props  为对象  ： ~拿到 对象中属性的值 在路由组件中设置  props：['对象属性名']
+    3. props  为函数(接收route对象为形参,路由参数：route.params.参数名)： ~拿到 对象中属性的值，以及参数值 在路由组件中设置  props：['对象属性名',路由参数值]
+ -->
+  <body>
+    <div id="app">
+      <router-link to="/user/1">user1</router-link>
+      <router-link to="/user/2">user2</router-link>
+      <router-link to="/user/3">user3</router-link>
+      <router-link to="/user/4">user4</router-link>
+      <router-link to="/register/1">register</router-link>
+      <router-link to="/admin/2">admin</router-link>
+
+      <!-- 路由占位符，未来通过路由规则匹配到的组件将会被渲染到router-view所在的位置 -->
+      <router-view></router-view>
+    </div>
+
+    <script>
+      const User = {
+        props: ["id"],
+        //1. props 开启 就不需要用$route.params访问参数了
+        template: `<h1>User 用户id：{{id}}</h1>`,
+      };
+
+      const Register = {
+        //2. 路由中props是一个对象的时候,props传递对象的属性名，但是就不能访问到id了
+        props: ["uname", "age"],
+        template: `<h1>Register 注册信息为：{{uname}},{{age}}</h1>`,
+      };
+
+      const Admin = {
+        //3.路由中props是一个函数，传递形参为route
+        props: ["uname", "age", "id"],
+        template: `<h1>admin 信息为：{{uname}},{{age}},{{id}}</h1>`,
+      };
+
+      //创建路由实例对象
+      var router = new VueRouter({
+        //路由规则
+        //至少拥有 path 和 component
+        routes: [
+          //重定向，当用户访问 / 的时候跳转到 /user
+          { path: "/", redirect: "/user" },
+          //props 开启 就不需要用$route.params访问参数了
+          //props如果是个对象，它会被按原样设置为组件属性
+          { path: "/user/:id", component: User, props: true },
+          {
+            path: "/register/:id",
+            component: Register,
+            props: { uname: "zhangsan", age: 12 },
+          },
+          {
+            path: "/admin/:id",
+            component: Admin,
+            props: (route) => ({
+              uname: "huiye",
+              age: 18,
+              id: route.params.id,
+            }),
+          },
+        ],
+      });
+
+      var vm = new Vue({
+        el: "#app",
+        //挂载到vue实例对象上
+        router,
+      });
+    </script>
+  </body>
+</html>

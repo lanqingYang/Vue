@@ -500,6 +500,54 @@ Vue前端路由  Vue-Router
              父级路由通过children属性配置子集路由
 
         25. 动态路由匹配
-            通过路由参数的模式进行路由匹配
-            { path: "/user/:id", component:User },
-            路由组件中通过 $route.params获取路由参数
+            .1 通过路由参数的模式进行路由匹配(18-04)
+              { path: "/user/:id", component:User },
+              路由组件中通过 $route.params获取路由参数
+
+            .2 路由组件传递参数(18-05)
+             $route与对应路由形成高度耦合，不灵活，所以使用props将组件和路由解耦
+
+             ..1 props的值为布尔类型
+              routes:[
+                  {path: "/user/:id", redirect: "/user" , props:true }
+              ]
+
+                const User={
+                    props:['id'] ,//使用props接收路由参数
+                    template：'<div>{{id}}</div>' //使用路由接收参数
+                }
+        
+             ..2但是当props传递的是一个对象
+                 在组件模板中就不能访问到id了
+                {path: "/user/:id", redirect: "/user" , props:{uname:'zhangsan',age:12} }
+
+                const User={
+                    props:['uname','age'] ,//使用props接收路由参数
+                    template：'<div>{{uname ++++  age}}</div>' //使用路由接收参数
+                }
+            
+             ..3 props的值为函数类型
+                这个函数接收自己route对象为自己的形参
+                {path: "/user/:id", redirect: "/user" , 
+                props: route => ({uname:'zhangsan',age:12, id: route.params.id} })
+
+                const User={
+                    props:['uname','age','id'] 
+                }
+
+        26. 命名路由
+            为了更方便的表示路由的路径，给路由规则起别名，为"命名路由"
+            {path: "/user/:id", redirect: "/user" ,   ！name:'user'！ }
+            通过命名路由实现页面的跳转 (!!!注意前面要to前面要加:!!)
+            <router-link :to="{name:'user',params:{id:123}}">User</route-link>
+
+        27. 编程式导航
+           .1 页面导航两种方式
+               ..1 声明式导航 ： 通过 点击链接 实现导航的方式
+                                eg： <a></a>  <router-link></router-link>
+
+               ..2 编程式导航 ： 通过 调用js形式的API实现导航的方式
+                                eg： 普通网页中 location.href
+
+            .2 常用编程式导航API： 
+                 

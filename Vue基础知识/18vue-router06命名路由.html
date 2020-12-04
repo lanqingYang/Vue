@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>命名路由</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- 通过命名路由来绑定 name:跳转到的路由，params：携带的参数 这里to是属性绑定 需要在前面加上 ‘:’-->
+      <router-link :to="{name:'user',params:{id:1}}">user1</router-link>
+      <router-link :to="{name:'user',params:{id:2}}">user2</router-link>
+      <router-link :to="{name:'user',params:{id:3}}">user3</router-link>
+      <router-link to="/user/4">user4</router-link>
+      <router-link to="/register/1">register</router-link>
+      <router-link to="/admin/2">admin</router-link>
+
+      <router-view></router-view>
+    </div>
+
+    <script>
+      const User = {
+        props: ["id"],
+        template: `<h1>User 用户id：{{id}}</h1>`,
+      };
+
+      const Register = {
+        props: ["uname", "age"],
+        template: `<h1>Register 注册信息为：{{uname}},{{age}}</h1>`,
+      };
+
+      const Admin = {
+        props: ["uname", "age", "id"],
+        template: `<h1>admin 信息为：{{uname}},{{age}},{{id}}</h1>`,
+      };
+
+      var router = new VueRouter({
+        routes: [
+          { path: "/", redirect: "/user" },
+          {
+            //命名路由
+            name: "user",
+            path: "/user/:id",
+            component: User,
+            props: true,
+          },
+          {
+            name: "register",
+            path: "/register/:id",
+            component: Register,
+            props: { uname: "zhangsan", age: 12 },
+          },
+          {
+            name: "admin",
+            path: "/admin/:id",
+            component: Admin,
+            props: (route) => ({
+              uname: "huiye",
+              age: 18,
+              id: route.params.id,
+            }),
+          },
+        ],
+      });
+
+      var vm = new Vue({
+        el: "#app",
+        router,
+      });
+    </script>
+  </body>
+</html>
