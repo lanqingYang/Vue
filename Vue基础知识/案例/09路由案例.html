@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>路由案例</title>
+  </head>
+  <!-- 
+    要点：  路由基本使用，嵌套路由，路由重定向，路由传参，编程式导航
+ -->
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    ul,
+    li {
+      list-style: none;
+    }
+    .header,
+    .footer {
+      background-color: gray;
+      height: 40px;
+      line-height: 40px;
+      color: #fff;
+      font-size: 30px;
+      text-align: center;
+      /* margin-bottom: 10px; */
+    }
+
+    /* .main::after {
+      content: " ";
+      clear: both;
+      display: block;
+      visibility: hidden;
+      height: 0;
+    } */
+
+    .mian {
+      height: 600px;
+      /* margin-bottom: 10px; */
+    }
+    .content {
+      width: 100%;
+      margin: 0 auto;
+    }
+    .content.left {
+      float: left;
+      width: 20%;
+      height: 100%;
+      background-color: gray;
+    }
+    .content.right {
+      float: right;
+      width: 80%;
+      text-align: center;
+      padding-top: 20px;
+    }
+    .content.left li {
+      width: 100%;
+      height: 50px;
+      cursor: pointer;
+      background-color: pink;
+      border-bottom: 2px solid #fff;
+      text-align: center;
+      line-height: 50px;
+    }
+    .content.left li a {
+      text-decoration: none;
+      color: black;
+    }
+    .footer {
+      font-size: 16px;
+      color: #fff;
+      text-align: center;
+    }
+    table {
+      width: 98%;
+    }
+    table th {
+      background-color: rgb(212, 212, 212);
+      height: 40px;
+    }
+    table td {
+      background-color: rgb(241, 240, 240);
+      height: 40px;
+    }
+    table a {
+    }
+  </style>
+  <body>
+    <!-- 要被vue实例控制的区域 -->
+    <div id="app">
+      <!-- ！！！路由占位符，将对应路由的内容展示到这里 -->
+      <router-view></router-view>
+    </div>
+    <script>
+      // 1.定义app的组件
+      const App = {
+        template: `<div>
+              <!-- 头部区域 -->
+        <div class="header">后台管理系统</div>
+        <!-- 主体区域 -->
+        <div class="mian">
+          <!-- 左侧菜单栏 -->
+          <div class="content left">
+            <ul>
+              <li><router-link to='/users'>用户管理</router-link></li>
+              <li><router-link to='/rights'>权限管理</router-link></li>
+              <li><router-link to='/goods'>商品管理</router-link></li>
+              <li><router-link to='/orders'>订单管理</router-link></li>
+              <li><router-link to='/settings'>系统设置</router-link></li>
+            </ul>
+          </div>
+          <!-- 右侧内容区域 -->
+          <div class="content right">
+            <div class="main-content"><router-view></router-view></div>
+
+          </div>
+        </div>
+        <!-- 尾部区域 -->
+        <div class="footer">版权信息</div>
+          </div>
+
+      `,
+      };
+      //3.给5个链接对应的组件
+      const Users = {
+        //给组件添加数据
+        data() {
+          return {
+            userlist: [
+              {
+                id: 1,
+                name: "zhangsan",
+                age: 10,
+              },
+              {
+                id: 2,
+                name: "wangwu",
+                age: 11,
+              },
+              {
+                id: 3,
+                name: "lisi",
+                age: 12,
+              },
+              {
+                id: 4,
+                name: "ergou",
+                age: 13,
+              },
+            ],
+          };
+        },
+        template: `<div>
+            <h3>用户管理内容</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>姓名</th>
+                        <th>年龄</th>
+                        <th>操作</th>
+                    </tr>    
+                </thead>
+                <tbody>
+                    <tr v-for="item in userlist" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.age}}</td>
+                        <td>
+                            <a href="JavaScript:;" @click="goDetail(item.id)">详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>`,
+
+        methods: {
+          goDetail: function (id) {
+            // console.log(id);
+            // 6.编程式导航实现路由的跳转
+            this.$router.push("/userinfo/" + id);
+          },
+        },
+      };
+
+      //4.定义用户的详情页面组件 ，并在下面定义相应的路由规则
+      const Userinfo = {
+        props: ["id"],
+        template: `<div>
+                <h5>用户详情页面 --- 用户id为： {{id}}</h5>
+                <button @click="goback()">后退</button>
+            </div>`,
+        methods: {
+          goback() {
+            //实现后退功能
+            this.$router.go(-1);
+          },
+        },
+      };
+
+      const Rights = {
+        template: `<div><h3>权限管理内容</h3></div>`,
+      };
+      const Goods = {
+        template: `<div><h3>商品管理内容</h3></div>`,
+      };
+      const Orders = {
+        template: `<div><h3>商品管理内容</h3></div>`,
+      };
+      const Settings = {
+        template: `<div><h3>系统管理内容</h3></div>`,
+      };
+
+      //2.创建路由对象
+      const router = new VueRouter({
+        routes: [
+          // 对应的路由 显示对应的组件
+          //   访问/根路径的时候显示内容
+          {
+            path: "/",
+            redirect: "/users",
+            component: App,
+            children: [
+              {
+                path: "/users",
+                component: Users,
+              },
+              {
+                path: "/userinfo/:id",
+                component: Userinfo,
+                //props：true 用户就能拿到url中的参数的值
+                props: true,
+              },
+              {
+                path: "/goods",
+                component: Goods,
+              },
+              {
+                path: "/rights",
+                component: Rights,
+              },
+              {
+                path: "/orders",
+                component: Orders,
+              },
+              {
+                path: "/settings",
+                component: Settings,
+              },
+            ],
+          },
+        ],
+      });
+      const vm = new Vue({
+        el: "#app",
+        router,
+      });
+    </script>
+  </body>
+</html>
