@@ -1,0 +1,78 @@
+（2020-12-6）
+一、模块化规范
+    1.模块化好处
+        传统开发问题： 命名冲突、文件依赖
+        模块化：把单独的功能封装到以一个模块中，模块相互隔离，通过接口公开内部成员，也可依赖其他模块
+        好处: 方便代码重用，从而提升效率，方便后期维护。
+
+    2.模块规范
+        .1 浏览器端 （举例的两个已经落伍了）
+            ..1 AMD 
+             Require.js
+            ..2 CMD 
+             Sea.js
+        .2 服务器端
+            ..1 CommonJS
+                ·模块分为 单文件模块 和 包
+                ·模块成员导出： module.exports 和 exports
+                ·模块成员导入： require('模块标识')
+
+        .3!! ES6模块化  (大一统的模块化规范)
+
+             1，2的模块化标准，存在一定差异，不是浏览器与服务器通用的模块化标准，所以提出了ES6
+            ES6语法规范 是浏览器和服务器通用的模块化开发规范。
+
+            ..1 ES6模块化规范中定义：！！
+                每个js文件都是一个独立的模块
+                导入模块成员用  import！！ 关键字
+                暴露模块成员用  export！！ 关键字
+            
+            ..2 Node.js中通过babel体验ES6模块化 ( 例子在:文件夹:node通过babel体验es6模块化)
+                步骤：  ·npm install --save-dev @babel/core @babel/preset-env @babel/node
+                        · npm install --save-dev @babel/polyfill
+                        ·项目根目录创建文件 babel.config.js
+                        ·babel.config.js文件内容如下代码
+                                const presets=[
+                                    ["@babel/env",{
+                                        targets:{
+                                            edge:"17",
+                                            firefox:"60",
+                                            chrome:"67",
+                                            safari:"11.1"
+                                        }
+                                    }]
+                                ];
+                            module.exports={presets}
+                        ·通过 npx babel-node index.js 执行代码
+
+    3.模块化基本语法
+     .1 默认导入与导出(m1.js 和  index.js)
+            默认导出语法： export default 默认导出的成员
+            默认导入语法： import 接受名称 from "模块标识符"
+
+            ！每个模块中，只允许使用唯一的一次export default 否则会报错！
+            没有导出任何东西 ，在另一文件夹导入 会导入一个空对象
+    
+     .2 按需导入和导出(m1.js 和  index.js)
+        按需导出： export let s1=10
+        按需导入： import {s1} from '模块标识符'
+
+        默认导出和按需导出不会冲突
+
+     
+     .3 直接导入并执行模块代码(m2.js 和  index.js)
+       单纯执行某个模块中的代码，并不需要得到模块中向外暴露的成员，此时，可直接导入并执行模块代码
+       import '模块标识符'
+
+
+
+
+
+
+二、webpack
+
+三、Vue单文件组件
+
+四、Vue脚手架
+
+五、Element-UI
